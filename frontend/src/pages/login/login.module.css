@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap');
+
+.appName{
+    font-family: "Monsieur La Doulaise", cursive;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding-top: 120px;
+    box-sizing: border-box;
+}
+
+.card{
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: min(350px, calc(100vw - 32px));
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.card h2{
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 500;
+}
+
+.inputField{
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.loginButton{
+    width: 100%;
+    padding: 10px;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.loginBtn{
+    width: 100%;
+    padding: 10px;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.registerText{
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+    color:#666;
+}
+
+.registerLink{
+    color: #ff69b4;
+    cursor:pointer;
+    font-weight:bold;
+    text-decoration:underline;
+    margin-left:5px;
+}

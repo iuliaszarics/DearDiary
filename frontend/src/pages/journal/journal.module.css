@@ -1,0 +1,583 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Monsieur+La+Doulaise&display=swap');
+
+.wordmark {
+    position: fixed;
+    top: 14px;
+    left: 18px;
+    z-index: 20;
+    font-family: 'Monsieur La Doulaise', cursive;
+    font-size: clamp(3.2rem, 5vw, 5rem);
+    color: #371828;
+    line-height: 1;
+}
+
+.page {
+    min-height: 100vh;
+    padding: 92px 24px 24px 0; /* 0 padding on left for flush sidebar */
+    background: linear-gradient(135deg, #fdfaf5 0%, #fff7fb 100%);
+    font-family: 'Inter', sans-serif;
+    color: #3d2c35;
+    box-sizing: border-box;
+    letter-spacing: -0.01em;
+}
+
+.appShell {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    gap: 22px;
+}
+
+.sidebar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 0 16px 16px 0; /* flush on left */
+    padding: 18px 14px;
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    width: 260px;
+    min-width: 260px;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 4px 8px 32px rgba(111, 47, 79, 0.08); /* shadow extends rightwards */
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+}
+
+.sidebarCollapsed {
+    width: 72px;
+    min-width: 72px;
+    padding: 18px 8px;
+}
+
+.sidebarToggle {
+    background: transparent;
+    border: none;
+    color: #6f2f4f;
+    font-size: 1.25rem;
+    cursor: pointer;
+    align-self: flex-start;
+    padding: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    width: fit-content;
+    transition: background-color 0.2s;
+}
+
+.sidebarToggle:hover {
+    background-color: rgba(111, 47, 79, 0.05);
+}
+
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.navButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    color: #6f2f4f;
+    padding: 12px 14px;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s ease;
+}
+
+.navButton span:last-child {
+    white-space: nowrap;
+}
+
+.navButtonIcon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 192, 203, 0.45);
+    color: #6f2f4f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    flex: 0 0 auto;
+}
+
+.navButton:hover {
+    background: #fff7fb;
+}
+
+.navButtonActive {
+    background: #ff69b4;
+    color: #fff;
+    border-color: transparent;
+}
+
+.contentPane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+}
+
+.panelCard,
+.notebookCard {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    padding: 34px;
+    box-shadow: 0 8px 32px rgba(111, 47, 79, 0.08);
+}
+
+.notebookCard {
+    width: min(380px, 100%);
+    margin: 0 auto;
+}
+
+.input {
+    width: 100%;
+    min-height: 360px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #3d2c35;
+    font-size: 1rem;
+    line-height: 1.8;
+    box-sizing: border-box;
+    resize: vertical;
+    outline: none;
+}
+
+.input:focus {
+    border-color: #ff69b4;
+}
+
+.actionsRow {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.entryView {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.analyzeButton {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 999px;
+    background: #ff69b4;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.analyzeButton:hover {
+    transform: translateY(-1px);
+}
+
+.analyzeButton:disabled {
+    opacity: 0.68;
+    cursor: progress;
+    transform: none;
+}
+
+.stackedSection {
+    display: grid;
+    gap: 16px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.sectionHeader h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #6f2f4f;
+}
+
+.resultContent {
+    display: grid;
+    gap: 16px;
+}
+
+.emotionPill {
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff0f7;
+    color: #6f2f4f;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.resultHeadline {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #602b45;
+}
+
+.resultText {
+    margin: 0;
+    color: #7b4b60;
+    line-height: 1.7;
+}
+
+.detailList {
+    margin: 0;
+    padding-left: 18px;
+    color: #7b4b60;
+    line-height: 1.7;
+}
+
+.metricsRow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.metricBox {
+    padding: 12px;
+    border-radius: 5px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.metricBox span {
+    display: block;
+    margin-bottom: 6px;
+    color: #8a5e71;
+    font-size: 0.82rem;
+}
+
+.metricBox strong {
+    color: #6f2f4f;
+}
+
+.subsection {
+    display: grid;
+    gap: 10px;
+}
+
+.subsection h3 {
+    margin: 0;
+    color: #6f2f4f;
+}
+
+.adviceList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.adviceCard {
+    padding: 14px;
+    border-radius: 5px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.adviceCard h4 {
+    margin: 0 0 8px;
+    color: #6f2f4f;
+}
+
+.adviceCard p {
+    margin: 0 0 8px;
+    color: #7b4b60;
+    line-height: 1.6;
+}
+
+.adviceCard small {
+    color: #8a5e71;
+    line-height: 1.5;
+}
+
+.monthPickerWrap {
+    display: grid;
+    gap: 6px;
+    min-width: 170px;
+}
+
+.monthPickerWrap span {
+    color: #8a5e71;
+    font-size: 0.84rem;
+}
+
+.monthPicker {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: #ffffff;
+    color: #6f2f4f;
+}
+
+.calendarStats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.calendarStats span {
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    color: #7b4b60;
+    font-size: 0.82rem;
+}
+
+.calendarGridWrap {
+    display: grid;
+    gap: 10px;
+}
+
+.weekdayRow,
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.weekdayCell {
+    font-size: 0.8rem;
+    color: #8a5e71;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 6px;
+    font-weight: 700;
+}
+
+.calendarCell,
+.calendarCellPlaceholder {
+    min-height: 118px;
+    border-radius: 14px;
+}
+
+.calendarCellPlaceholder {
+    background: #ffffff;
+    border: 1px dashed #ccc;
+}
+
+.calendarCell {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+}
+
+.calendarCell::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--day-color, #f472b6);
+    margin-bottom: 10px;
+}
+
+.calendarDayNumber {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6f2f4f;
+}
+
+.calendarEmotion {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    color: #7b4b60;
+    text-transform: capitalize;
+}
+
+.calendarCount {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: #9b7083;
+}
+
+.calendarSummary {
+    margin: 8px 0 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: #845869;
+}
+
+.historyList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.historyItem {
+    padding: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    display: grid;
+    gap: 8px;
+}
+
+.historyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.historyDate {
+    color: #95657a;
+    font-size: 0.8rem;
+}
+
+.historyEmotion {
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #fff0f7;
+    color: #6f2f4f;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.historyText,
+.historyInsightBody {
+    margin: 0;
+    color: #7b4b60;
+    line-height: 1.6;
+    font-size: 0.88rem;
+}
+
+.historyInsightTitle {
+    margin: 0;
+    color: #6f2f4f;
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+
+.historyAdviceList {
+    display: grid;
+    gap: 8px;
+}
+
+.historyAdviceItem {
+    border: 1px solid #ccc;
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.historyAdviceItem strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #6f2f4f;
+    font-size: 0.84rem;
+}
+
+.historyAdviceItem p {
+    margin: 0;
+    color: #7b4b60;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.emptyState {
+    margin: 0;
+    color: #8a5e71;
+    line-height: 1.6;
+}
+
+.errorText {
+    margin: 0;
+    color: #b42318;
+    font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+    .appShell {
+        width: 100%;
+        margin: 0;
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+    }
+
+    .navList {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .navButton {
+        text-align: center;
+    }
+
+    .sidebarCollapsed {
+        width: 100%;
+    }
+
+    .contentPane {
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 760px) {
+    .wordmark {
+        left: 12px;
+        top: 10px;
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 760px) {
+    .page {
+        padding: 12px;
+    }
+
+    .panelCard,
+    .notebookCard,
+    .sidebar {
+        border-radius: 10px;
+        padding: 16px;
+    }
+
+    .metricsRow {
+        grid-template-columns: 1fr;
+    }
+
+    .calendarCell,
+    .calendarCellPlaceholder {
+        min-height: 104px;
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "deardiary",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix frontend start",
+    "start:frontend": "npm --prefix frontend start"
+  }
+}

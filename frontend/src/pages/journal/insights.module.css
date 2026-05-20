@@ -1,0 +1,198 @@
+.stackedSection {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+}
+
+.card {
+    background: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.sectionHeader h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #6f2f4f;
+}
+
+.resultContent {
+    display: grid;
+    gap: 16px;
+}
+
+.emotionPill {
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff0f7;
+    color: #6f2f4f;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.resultHeadline {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #602b45;
+}
+
+.resultText {
+    margin: 0;
+    color: #7b4b60;
+    line-height: 1.7;
+}
+
+.detailList {
+    margin: 0;
+    padding-left: 18px;
+    color: #7b4b60;
+    line-height: 1.7;
+}
+
+.metricsRow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.metricBox {
+    padding: 12px;
+    border-radius: 5px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.metricBox span {
+    display: block;
+    margin-bottom: 6px;
+    color: #8a5e71;
+    font-size: 0.82rem;
+}
+
+.metricBox strong {
+    color: #6f2f4f;
+}
+
+.subsection {
+    display: grid;
+    gap: 10px;
+}
+
+.subsection h3 {
+    margin: 0;
+    color: #6f2f4f;
+}
+
+.adviceList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.adviceCard {
+    padding: 14px;
+    border-radius: 5px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.adviceCard h4 {
+    margin: 0 0 8px;
+    color: #6f2f4f;
+}
+
+.adviceCard p {
+    margin: 0 0 8px;
+    color: #7b4b60;
+    line-height: 1.6;
+}
+
+.adviceCard small {
+    color: #8a5e71;
+    line-height: 1.5;
+}
+
+.emptyState {
+    margin: 0;
+    color: #8a5e71;
+    line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+    .metricsRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+.historyList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.historyItem {
+    padding: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    display: grid;
+    gap: 8px;
+}
+
+.historyItemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.historyDate {
+    color: #95657a;
+    font-size: 0.8rem;
+}
+
+.historyInsightTitle {
+    margin: 0;
+    color: #6f2f4f;
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+
+.historyInsightBody {
+    margin: 0;
+    color: #7b4b60;
+    line-height: 1.6;
+    font-size: 0.88rem;
+}
+
+.deleteButton {
+    background: transparent;
+    border: none;
+    color: #e03131;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+.deleteButton:hover {
+    background: #fff0f0;
+}

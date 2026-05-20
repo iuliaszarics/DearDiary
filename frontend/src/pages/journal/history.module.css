@@ -1,0 +1,136 @@
+.bookContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 12px 24px;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(111, 47, 79, 0.08);
+}
+
+.navBtn {
+    background: transparent;
+    border: none;
+    color: #ff69b4;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+
+.navBtn:hover:not(:disabled) {
+    background: #fff0f7;
+}
+
+.navBtn:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.datePicker {
+    border: 1px solid #ffb6c1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #6f2f4f;
+    outline: none;
+    font-family: inherit;
+    background: transparent;
+}
+
+.pageCard {
+    width: min(800px, 100%);
+    min-height: 500px;
+    padding: 32px 40px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    background-color: #fffdf8;
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        #e0d8d8 31px,
+        #e0d8d8 32px
+    );
+    background-position: 0 0;
+    color: #4a3f45;
+    font-size: 1.1rem;
+    line-height: 32px;
+    box-shadow: 0 8px 32px rgba(111, 47, 79, 0.08);
+    animation: flipIn 0.4s ease-out;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px dashed #e0d8d8;
+    padding-bottom: 4px;
+    box-sizing: border-box;
+}
+
+.date {
+    color: #95657a;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.deleteButton {
+    background: transparent;
+    border: none;
+    color: #e03131;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.deleteButton:hover {
+    background: #fff0f0;
+}
+
+.pageContent {
+    white-space: pre-wrap;
+}
+
+.text {
+    margin: 0;
+    color: #4a3f45;
+    line-height: 32px;
+}
+
+.emptyState {
+    margin: 0;
+    color: #8a5e71;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.errorText {
+    margin: 0;
+    color: #b42318;
+    font-weight: 600;
+    text-align: center;
+}
+
+@keyframes flipIn {
+    from {
+        opacity: 0;
+        transform: rotateY(-10deg) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0) scale(1);
+    }
+}
