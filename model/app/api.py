@@ -23,10 +23,17 @@ class EmotionPrediction(BaseModel):
 	score: float
 
 
+class ChunkPrediction(BaseModel):
+	chunk_id: int
+	prediction: EmotionPrediction
+	scores: Dict[str, float]
+
+
 class PredictResponse(BaseModel):
 	task_type: str
 	prediction: EmotionPrediction
 	scores: Dict[str, float]
+	timeline: List[ChunkPrediction]
 
 
 app = FastAPI(title="Emotion Inference API", version="1.0.0")
@@ -124,35 +131,60 @@ def _predict_single(text: str) -> Dict[str, Any]:
 		truncation=True,
 		padding="max_length",
 		max_length=config.MAX_LENGTH,
+		return_overflowing_tokens=True,
+		stride=20,
 		return_tensors="pt",
 	)
+	
+	# The model doesn't expect this mapping token
+	if "overflow_to_sample_mapping" in encoded:
+		del encoded["overflow_to_sample_mapping"]
+
 	encoded = {key: value.to(device) for key, value in encoded.items()}
 
 	with torch.no_grad():
 		logits = model(**encoded).logits
 
 	if task_type == "single_label":
-		probabilities = torch.softmax(logits, dim=-1)[0].detach().cpu().numpy().tolist()
-		prediction_idx = int(torch.argmax(logits, dim=-1).item())
+		probabilities = torch.softmax(logits, dim=-1).detach().cpu().numpy()
 	else:
-		probabilities = torch.sigmoid(logits)[0].detach().cpu().numpy().tolist()
-		prediction_idx = int(max(range(len(probabilities)), key=lambda idx: probabilities[idx]))
+		probabilities = torch.sigmoid(logits).detach().cpu().numpy()
 
-	label_scores = {
+	timeline = []
+	for chunk_idx, chunk_probs in enumerate(probabilities):
+		prediction_idx = int(chunk_probs.argmax())
+		label_scores = {
+			class_names[idx] if idx < len(class_names) else f"label_{idx}": float(score)
+			for idx, score in enumerate(chunk_probs)
+		}
+		predicted_label = class_names[prediction_idx] if prediction_idx < len(class_names) else f"label_{prediction_idx}"
+		
+		timeline.append({
+			"chunk_id": chunk_idx,
+			"prediction": {
+				"label": predicted_label,
+				"score": float(chunk_probs[prediction_idx]),
+			},
+			"scores": label_scores,
+		})
+
+	avg_probabilities = probabilities.mean(axis=0)
+	avg_prediction_idx = int(avg_probabilities.argmax())
+	
+	avg_label_scores = {
 		class_names[idx] if idx < len(class_names) else f"label_{idx}": float(score)
-		for idx, score in enumerate(probabilities)
+		for idx, score in enumerate(avg_probabilities)
 	}
-
-	predicted_label = class_names[prediction_idx] if prediction_idx < len(class_names) else f"label_{prediction_idx}"
-	predicted_score = float(probabilities[prediction_idx])
+	avg_predicted_label = class_names[avg_prediction_idx] if avg_prediction_idx < len(class_names) else f"label_{avg_prediction_idx}"
 
 	return {
 		"task_type": task_type,
 		"prediction": {
-			"label": predicted_label,
-			"score": predicted_score,
+			"label": avg_predicted_label,
+			"score": float(avg_probabilities[avg_prediction_idx]),
 		},
-		"scores": label_scores,
+		"scores": avg_label_scores,
+		"timeline": timeline,
 	}
 
 

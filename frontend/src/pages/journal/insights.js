@@ -22,21 +22,12 @@ export default function InsightsView({ result, history = [], isHistoryLoading, h
                     </div>
 
                     <div className={styles.resultContent}>
-                        <div className={styles.emotionPill}>{result.predicted_emotion}</div>
                         <div className={styles.subsection}>
                             <h3>Your entry</h3>
                             <p className={styles.resultText}>{result.text}</p>
                         </div>
                         <p className={styles.resultHeadline}>{result?.insight?.title || 'Analysis complete'}</p>
                         <p className={styles.resultText}>{result?.insight?.explanation}</p>
-
-                        {Array.isArray(result?.insight?.details) && result.insight.details.length > 0 && (
-                            <ul className={styles.detailList}>
-                                {result.insight.details.map((detail) => (
-                                    <li key={detail}>{detail}</li>
-                                ))}
-                            </ul>
-                        )}
 
                         <div className={styles.subsection}>
                             <h3>Personalized advice</h3>

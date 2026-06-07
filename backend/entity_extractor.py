@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 from transformers import pipeline
 from nlp_model import predict_emotion
 import nltk
+import truecase
 
 try:
     nltk.data.find('tokenizers/punkt_tab')
@@ -42,11 +43,9 @@ def extract_entities_with_emotion(text: str) -> List[Dict[str, Any]]:
         if not sentence.strip():
             continue
             
-        # Heuristic: if the sentence is mostly lowercase (e.g., lazy typing),
-        # standard NER will fail to find entities. We temporarily title-case 
-        # it for the pipeline to give it the necessary casing signals.
-        uppercase_count = sum(1 for c in sentence if c.isupper())
-        text_to_process = sentence.title() if uppercase_count < 2 else sentence
+        # Use truecasing to restore natural capitalization without over-capitalizing
+        # This replaces the previous uppercase_count heuristic
+        text_to_process = truecase.get_true_case(sentence)
         
         entities = ner_pipeline(text_to_process)
         

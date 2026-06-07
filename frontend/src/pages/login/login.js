@@ -13,7 +13,9 @@ export default function Login({setUserId}) {
     const handleLogin = async() => {
         try{
             const response = await axios.post(`${API_URL}/login`, formData);
-            setUserId(response.data.user_id);
+            const nextUserId = response.data.user_id;
+            localStorage.setItem('userId', String(nextUserId));
+            setUserId(nextUserId);
             navigate('/dashboard');
         } catch (error) {
             alert('Login failed. Please check your credentials and try again.');

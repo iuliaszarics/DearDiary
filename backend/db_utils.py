@@ -8,9 +8,35 @@ from calendar import monthrange
 from urllib import error, request
 from nlp_model import predict_emotion
 from entity_extractor import extract_entities_with_emotion, generate_entity_advice
+from cryptography.fernet import Fernet, InvalidToken
+from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 db_path= str(PROJECT_ROOT / 'database' / 'journal.db')
+
+load_dotenv(PROJECT_ROOT / 'backend' / '.env')
+FERNET_KEY = os.getenv("FERNET_KEY")
+if not FERNET_KEY:
+    FERNET_KEY = Fernet.generate_key()
+    with open(PROJECT_ROOT / 'backend' / '.env', 'a') as f:
+        f.write(f"\nFERNET_KEY={FERNET_KEY.decode('utf-8')}\n")
+else:
+    FERNET_KEY = FERNET_KEY.encode('utf-8')
+
+cipher_suite = Fernet(FERNET_KEY)
+
+def encrypt_text(text: str) -> str:
+    if not text:
+        return text
+    return cipher_suite.encrypt(text.encode('utf-8')).decode('utf-8')
+
+def decrypt_text(encrypted_text: str) -> str:
+    if not encrypted_text:
+        return encrypted_text
+    try:
+        return cipher_suite.decrypt(encrypted_text.encode('utf-8')).decode('utf-8')
+    except InvalidToken:
+        return encrypted_text
 
 POSITIVE_EMOTIONS={'admiration','amusement','approval','caring','desire','excitement','gratitude','joy','love','optimism','pride','relief'}
 NEGATIVE_EMOTIONS={'anger','annoyance','disappointment','disapproval','disgust','embarrassment','fear','grief','nervousness','remorse','sadness'}
@@ -72,11 +98,11 @@ def emotion_categorization(predicted_emotion):
     elif label in NEUTRAL_EMOTIONS:
         return 'neutral'
 
-def analyze_entry(user_id, text):
+def analyze_entry(user_id, text, incognito=False):
     connection=get_db_connection()
     try:
         entry_time=datetime.now().isoformat(timespec='seconds')
-        cursor=connection.execute("insert into Entries(user_id,text,entry_time) values(?,?,?)", (user_id, text, entry_time))
+        cursor=connection.execute("insert into Entries(user_id,text,entry_time) values(?,?,?)", (user_id, encrypt_text(text), entry_time))
         entry_id=cursor.lastrowid
         model_result = predict_emotion(text)
         if model_result is None:
@@ -87,7 +113,7 @@ def analyze_entry(user_id, text):
         task_type=model_result.get('task_type')
         scores=model_result.get('scores')
         scores_json=json.dumps(scores) if scores else None
-        insight_bundle = get_entry_insight(connection, user_id, text, predicted_emotion, confidence, scores, entry_time)
+        insight_bundle = get_entry_insight(connection, user_id, text, predicted_emotion, confidence, scores, entry_time, incognito)
         persist_entry_history(connection, entry_id, insight_bundle['insight'], insight_bundle['advice'])
         connection.execute("insert into Analysis (entry_id,model_name,predicted_emotion,confidence,scores_json, task_type) values (?,?,?,?,?,?)", (entry_id, model_name, predicted_emotion, confidence, scores_json, task_type))
         recalculate_daily_summary(connection, user_id, entry_time[:10])
@@ -160,9 +186,13 @@ def recalculate_daily_summary(connection, user_id, summary_date):
     total = len(rows)
     dominant_emotion = max(breakdown.items(), key=lambda item: item[1])[0]
     positivity_score = round((breakdown.get('positive',0)+(0.5*breakdown.get('neutral',0)))/total,2)
-    preview = (rows[0]['text'] or '').strip().replace('\n',' ')
+    preview = decrypt_text(rows[0]['text'] or '').strip().replace('\n',' ')
     latest_entry_preview  = preview[:160]
     summary_text=f"Your day had a {dominant_emotion} tone with a positivity score of {positivity_score}. You had {breakdown.get('positive',0)} positive, {breakdown.get('negative',0)} negative and {breakdown.get('neutral',0)} neutral entries. Your most recent entry was: \"{latest_entry_preview}\""
+    
+    latest_entry_preview_enc = encrypt_text(latest_entry_preview)
+    summary_text_enc = encrypt_text(summary_text)
+
     exists = connection.execute("select 1 from DailyEmotionSummary where user_id = ? and summary_date = ?", (user_id, summary_date)).fetchone()
     if exists:
         connection.execute(
@@ -172,7 +202,7 @@ def recalculate_daily_summary(connection, user_id, summary_date):
                 latest_entry_preview = ?, summary_text = ?
             WHERE user_id = ? AND summary_date = ?
             """,
-            (dominant_emotion, json.dumps(breakdown), positivity_score, total, latest_entry_preview, summary_text, user_id, summary_date),
+            (dominant_emotion, json.dumps(breakdown), positivity_score, total, latest_entry_preview_enc, summary_text_enc, user_id, summary_date),
         )
     else:
         connection.execute(
@@ -181,15 +211,37 @@ def recalculate_daily_summary(connection, user_id, summary_date):
             (user_id, summary_date, dominant_emotion, emotion_breakdown_json, positivity_score, entry_count, latest_entry_preview, summary_text)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (user_id, summary_date, dominant_emotion, json.dumps(breakdown), positivity_score, total, latest_entry_preview, summary_text),
+            (user_id, summary_date, dominant_emotion, json.dumps(breakdown), positivity_score, total, latest_entry_preview_enc, summary_text_enc),
         )
 
-def get_entry_insight(connection, user_id, text, predicted_emotion, confidence, scores, occured_at):
+def get_entry_insight(connection, user_id, text, predicted_emotion, confidence, scores, occured_at, incognito=False):
     insight = build_insight(predicted_emotion, confidence, scores)
     
     # Generate entity-based personalized advice
-    entities = extract_entities_with_emotion(text)
-    advice = generate_entity_advice(entities)
+    if incognito:
+        advice = []
+    else:
+        entities = extract_entities_with_emotion(text)
+        advice = generate_entity_advice(entities)
+    
+    # Add general advice
+    bucket = insight.get('bucket', 'neutral')
+    if bucket == 'positive':
+        advice.insert(0, {
+            "advice_key": "general_positive",
+            "emotion_key": "positive",
+            "title": "General Advice",
+            "advice_text": "Keep doing what you like with the people you love! Cherish these positive moments.",
+            "rationale_text": "Your overall entry is positive."
+        })
+    elif bucket == 'negative':
+        advice.insert(0, {
+            "advice_key": "general_negative",
+            "emotion_key": "negative",
+            "title": "General Advice",
+            "advice_text": "Consider trying some mindfulness or relaxation techniques. Taking a few deep breaths or a short walk can really help.",
+            "rationale_text": "Your overall entry reflects some heavy emotions."
+        })
     
     day_summary = None
     return{
@@ -200,7 +252,6 @@ def get_entry_insight(connection, user_id, text, predicted_emotion, confidence, 
 
 def build_insight(predicted_emotion, confidence, scores):
     bucket = emotion_categorization(predicted_emotion)
-    snippets = summarize_scores(scores)
     if bucket == 'positive':
         title = 'Positive emotion detected'
         explanation = (
@@ -208,30 +259,21 @@ def build_insight(predicted_emotion, confidence, scores):
             'or some form of connection that left you feeling better.'
         )
     elif bucket == 'negative':
-        title = 'Emotionally heavy moment detected'
+        title = 'Negative emotion detected'
         explanation = (
             'Your entry suggests emotional strain or discomfort. The wording points to stress, frustration, or a '
             'low mood that may need a small reset or some support.'
         )
     else:
-        title = 'Balanced or reflective tone detected'
+        title = 'Neutral emotion detected'
         explanation = (
             'Your entry appears more neutral or reflective than emotionally intense. That can mean you are describing '
             'events, organizing thoughts, or processing the day in a steady way.'
         )
 
-    details = [
-        f'Predicted emotion: {predicted_emotion}',
-        f'Confidence: {round(float(confidence) * 100)}%',
-    ]
-    if snippets:
-        top_snippet = snippets[0]
-        details.append(f'Top supporting score: {top_snippet["label"]} ({round(top_snippet["score"] * 100)}%)')
-
     return {
         'title': title,
         'explanation': explanation,
-        'details': details,
         'bucket': bucket,
     }
 
@@ -266,7 +308,7 @@ def get_calendar(user_id, year, month):
                 'color': assign_color_to_emotion(bucket),
                 'dominant_emotion': bucket,
                 'entry_count': row['entry_count'],
-                'summary_text': row['summary_text']
+                'summary_text': decrypt_text(row['summary_text']) if row['summary_text'] else 'No entries for this day.'
             }
             stats_key = f"{bucket}_days"
             if stats_key in stats:
@@ -419,7 +461,7 @@ def get_user_analysis_history(user_id, limit=20, offset=0, date=None):
                     
             item = {
                 'entry_id': entry_id,
-                'text': entry['text'],
+                'text': decrypt_text(entry['text']),
                 'occured_at': entry['occured_at'],
                 'predicted_emotion': entry['predicted_emotion'],
                 'confidence': entry['confidence'],

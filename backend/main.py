@@ -24,6 +24,7 @@ class User(BaseModel):
 class Entry(BaseModel):
     user_id: int
     text: str
+    incognito: bool = False
 
 @app.post("/register")
 def register(user:User):
@@ -43,7 +44,7 @@ def login(user:User):
 
 @app.post("/analyze")
 def analyze(entry: Entry):
-    analysis_result = db_utils.analyze_entry(entry.user_id, entry.text)
+    analysis_result = db_utils.analyze_entry(entry.user_id, entry.text, entry.incognito)
     if analysis_result:
         return {"analysis": analysis_result}
     else:

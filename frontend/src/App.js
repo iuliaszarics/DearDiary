@@ -5,7 +5,10 @@ import Dashboard from './pages/journal/journal';
 import { useState } from 'react';
 
 function App(){
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(() => {
+    const storedUserId = localStorage.getItem('userId');
+    return storedUserId ? Number(storedUserId) : null;
+  });
   return(
     <Router>
       <Routes>
