@@ -1,13 +1,13 @@
 # MODEL_NAME = "bert-base-uncased"
-MODEL_NAME = "distilbert-base-uncased"
-# MODEL_NAME = "roberta-base"
+# MODEL_NAME = "distilbert-base-uncased"
+MODEL_NAME = "roberta-base"
 # MODEL_NAME = "xlnet-base-cased"
 # MODEL_NAME = "google/bigbird-roberta-base"
 
 import os
 
 # Supported values: "single_label" (ISEAR) or "multi_label" (GoEmotions)
-TASK_TYPE = os.getenv("TASK_TYPE", "single_label").strip().lower()
+TASK_TYPE = os.getenv("TASK_TYPE", "multi_label").strip().lower()
 if TASK_TYPE not in ("single_label", "multi_label"):
     raise ValueError("TASK_TYPE must be either 'single_label' or 'multi_label'")
 
@@ -74,7 +74,10 @@ def _resolve_goemotions_path():
                 "AUTO_DOWNLOAD_GOEMOTIONS=1 requires kagglehub. Install it with: pip install kagglehub"
             ) from exc
 
-        return kagglehub.dataset_download("debarshichanda/goemotions")
+        path = kagglehub.dataset_download("debarshichanda/goemotions")
+        if os.path.exists(os.path.join(path, "data")):
+            return os.path.join(path, "data")
+        return path
 
     # Fallback to a standard location so the error message points to an expected path.
     return "data/goemotions"
