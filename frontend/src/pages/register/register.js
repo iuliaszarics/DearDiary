@@ -11,18 +11,15 @@ export default function Register() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleRegister = async () => {
     const payload = {
       username: formData.username.trim(),
       password: formData.password,
     };
-
     if (!payload.username || !payload.password) {
       alert('Please enter both username and password.');
       return;
     }
-
     try {
       setIsLoading(true);
       await axios.post(`${API_URL}/register`, payload);
@@ -36,7 +33,6 @@ export default function Register() {
       setIsLoading(false);
     }
   };
-
   return (
     <div className={styles.container}>
       <h1 className={styles.appName}>Dear Diary,</h1>

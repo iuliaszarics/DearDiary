@@ -26,22 +26,22 @@ export default function Login({setUserId}) {
             <h1 className={styles.appName}>Dear Diary, </h1>
             <div className={styles.card}>
                 <h2 style={{marginBottom:'20px',textAlign:'center'}}>Login</h2>
-                <input 
+                <input
                     className={styles.inputField}
-                    placeholder="Username" 
-                    value={formData.username} 
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })} 
+                    placeholder="Username"
+                    value={formData.username}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 />
-                <input 
+                <input
                     className={styles.inputField}
-                    type="password" 
-                    placeholder="Password" 
-                    value={formData.password} 
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
+                    type="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
                 <button className={styles.loginBtn} onClick={handleLogin}>Login</button>
                 <p className={styles.registerText}>
-                    Don't have an account? 
+                    Don't have an account?
                     <Link className={styles.registerLink} to="/register">
                         Register here
                     </Link>

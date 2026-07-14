@@ -1,10 +1,9 @@
 create table if not exists Users(
     user_id integer primary key autoincrement,
-    username text not null unique, 
+    username text not null unique,
     password_hash text not null,
     created_at datetime default current_timestamp
 );
-
 create table if not exists Entries(
     entry_id integer primary key autoincrement,
     user_id integer not null,
@@ -12,7 +11,6 @@ create table if not exists Entries(
     entry_time datetime default current_timestamp,
     foreign key (user_id) references Users(user_id) on delete cascade
 );
-
 create table if not exists Analysis(
     analysis_id integer primary key autoincrement,
     entry_id integer not null,
@@ -24,18 +22,6 @@ create table if not exists Analysis(
     analysis_time datetime default current_timestamp,
     foreign key (entry_id) references Entries(entry_id) on delete cascade
 );
-
-create table if not exists AdviceLibrary(
-    advice_id integer primary key autoincrement,
-    advice_key text not null unique,
-    emotion_key text not null, 
-    title text not null,
-    advice_text text not null,
-    rationale text not null,
-    active_flag integer not null default 1,
-    created_at datetime default current_timestamp
-);
-
 create table if not exists DailyEmotionSummary(
     summary_id integer primary key autoincrement,
     user_id integer not null,
@@ -49,7 +35,6 @@ create table if not exists DailyEmotionSummary(
     created_at datetime default current_timestamp,
     foreign key (user_id) references Users(user_id) on delete cascade
 );
-
 create table if not exists EntryAdviceHistory(
     advice_history_id integer primary key autoincrement,
     entry_id integer not null,
@@ -61,7 +46,6 @@ create table if not exists EntryAdviceHistory(
     created_at datetime default current_timestamp,
     foreign key (entry_id) references Entries(entry_id) on delete cascade
 );
-
 create table if not exists EntryInsightHistory(
     insight_history_id integer primary key autoincrement,
     entry_id integer not null,
@@ -72,9 +56,7 @@ create table if not exists EntryInsightHistory(
     created_at datetime default current_timestamp,
     foreign key (entry_id) references Entries(entry_id) on delete cascade
 );
-
 create index if not exists idx_entries_user on Entries(user_id);
 create index if not exists idx_analysis_entry on Analysis(entry_id);
 create index if not exists idx_daily_summary_user_date on DailyEmotionSummary(user_id, summary_date);
-create index if not exists idx_advice_library_emotion on AdviceLibrary(emotion_key, active_flag);
 create index if not exists idx_entry_advice_history_entry on EntryAdviceHistory(entry_id);

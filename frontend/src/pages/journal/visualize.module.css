@@ -3,7 +3,6 @@
   max-width: 1000px;
   margin: 0 auto;
 }
-
 .header {
   font-family: var(--font-primary, sans-serif);
   font-size: 2rem;
@@ -11,28 +10,23 @@
   margin-bottom: 2rem;
   text-align: center;
 }
-
 .chartsGrid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
-
 @media (min-width: 768px) {
   .chartsGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
-
 .chartCard {
   background: #fff;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
 }
-
 .chartTitle {
   font-size: 1.25rem;
   color: #444;
@@ -40,7 +34,6 @@
   text-align: center;
   font-weight: 600;
 }
-
 .chartWrapper {
   flex: 1;
   display: flex;
@@ -48,28 +41,24 @@
   align-items: center;
   min-height: 300px;
 }
-
 .loading {
   text-align: center;
   padding: 4rem;
   color: #666;
   font-size: 1.1rem;
 }
-
 .error {
   text-align: center;
   padding: 4rem;
   color: #d32f2f;
   font-size: 1.1rem;
 }
-
 .emptyText {
   text-align: center;
   color: #888;
   font-style: italic;
   margin: auto;
 }
-
 .filtersContainer {
   display: flex;
   justify-content: center;
@@ -78,19 +67,16 @@
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
-
 .filterGroup {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .filterLabel {
   font-size: 0.9rem;
   color: #555;
   font-weight: 500;
 }
-
 .filterSelect {
   padding: 0.5rem 1rem;
   border: 1px solid #ddd;
@@ -102,12 +88,155 @@
   outline: none;
   transition: all 0.2s ease;
 }
-
 .filterSelect:hover {
   border-color: #a2d2ff;
 }
-
 .filterSelect:focus {
   border-color: #a2d2ff;
   box-shadow: 0 0 0 2px rgba(162, 210, 255, 0.3);
+}
+.subTabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ccc;
+  background: #ffffff;
+  color: #6f2f4f;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.tabBtn:hover {
+  background: #fff7fb;
+}
+.tabBtnActive {
+  background: #ff69b4;
+  color: #fff;
+  border-color: transparent;
+}
+.heatmapWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem;
+}
+.heatmapGrid {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.heatmapHeaderLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6f2f4f;
+  text-align: center;
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.heatmapRowLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6f2f4f;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+.heatmapCell {
+  aspect-ratio: 1.5;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.heatmapCell:hover {
+  z-index: 2;
+  border-color: #ff69b4;
+}
+.cellCount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #555;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.heatmapLegend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+.legendLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6f2f4f;
+}
+.legendColorBar {
+  width: 150px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(to right, rgba(186, 225, 255, 1) 0%, #e2e2e2 50%, rgba(255, 179, 186, 1) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+  .chartCard {
+    padding: 12px;
+  }
+  .chartWrapper {
+    min-height: 250px;
+  }
+  .heatmapGrid {
+    grid-template-columns: 60px repeat(7, 1fr);
+    gap: 4px;
+  }
+  .heatmapRowLabel {
+    font-size: 0.75rem;
+    padding-right: 4px;
+  }
+  .heatmapHeaderLabel {
+    font-size: 0.75rem;
+  }
+  .heatmapCell {
+    border-radius: 4px;
+  }
+  .cellCount {
+    width: 14px;
+    height: 14px;
+    font-size: 0.65rem;
+  }
+  .heatmapLegend {
+    margin-top: 1rem;
+    gap: 8px;
+  }
+  .legendColorBar {
+    width: 100px;
+  }
 }

@@ -8,3 +8,4 @@ transformers>=4.0.0
 huggingface-hub>=0.14.0
 truecase
 cryptography
+spacy

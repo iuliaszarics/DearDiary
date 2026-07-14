@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DearDiary favicon">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f2937" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+  <path d="M20 18h16c5.5 0 10 4.5 10 10v18H32c-6.6 0-12-5.4-12-12V18z" fill="#f8fafc" opacity="0.96" />
+  <path d="M36 18v10h10" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M26 34h12M26 40h8" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+</svg>

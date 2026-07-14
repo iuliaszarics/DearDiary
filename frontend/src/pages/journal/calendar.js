@@ -28,7 +28,6 @@ export default function CalendarView({
                     />
                 </label>
             </div>
-
             {calendar?.stats && (
                 <div className={styles.calendarStats}>
                     <span>{calendar.stats.positive_days} positive days</span>
@@ -36,7 +35,6 @@ export default function CalendarView({
                     <span>{calendar.stats.negative_days} negative days</span>
                 </div>
             )}
-
             {isCalendarLoading ? (
                 <p className={styles.emptyState}>Loading calendar...</p>
             ) : calendarError ? (
@@ -50,21 +48,18 @@ export default function CalendarView({
                             </div>
                         ))}
                     </div>
-
                     <div className={styles.calendarGrid}>
                         {calendarCells.map((day, index) =>
                             day.empty ? (
                                 <div key={day.key || index} className={styles.calendarCellPlaceholder} />
                             ) : (
-                                <article 
-                                    key={day.date} 
-                                    className={styles.calendarCell} 
+                                <article
+                                    key={day.date}
+                                    className={styles.calendarCell}
                                     style={{ '--day-color': day.color }}
                                     onClick={() => onDayClick?.(day.date)}
                                 >
                                     <span className={styles.calendarDayNumber}>{day.day}</span>
-                                    <span className={styles.calendarEmotion}>{day.dominant_emotion}</span>
-                                    {day.entry_count > 0 && <span className={styles.calendarCount}>{day.entry_count} entries</span>}
                                     <p className={styles.calendarSummary}>{day.summary_text}</p>
                                 </article>
                             )

@@ -5,72 +5,58 @@
     padding: 24px;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
 .header {
     margin-bottom: 24px;
-    border-bottom: 2px solid #fffacd;
+    border-bottom: 2px solid #eaeaea;
     padding-bottom: 16px;
 }
-
 .header h2 {
     margin: 0 0 8px 0;
     font-size: 28px;
     color: #333;
 }
-
 .subtitle {
     margin: 0;
     color: #666;
     font-size: 14px;
 }
-
 .emptyState {
     text-align: center;
     color: #999;
     font-style: italic;
     padding: 40px 20px;
 }
-
 .memoriesList {
     width: 100%;
 }
-
 .count {
     color: #666;
     font-size: 14px;
     margin: 0 0 16px 0;
 }
-
 .memories {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
 }
-
 .memoryItem {
     padding: 16px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #eaeaea;
     border-radius: 6px;
-    background: linear-gradient(135deg, #fdf8f3 0%, #fff9e6 100%);
+    background: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
 .memoryItem:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
     border-color: #d66dd1;
 }
-
 .memoryHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 12px;
 }
-
 .title {
     margin: 0;
     font-size: 16px;
@@ -79,7 +65,6 @@
     flex: 1;
     word-break: break-word;
 }
-
 .emotion {
     padding: 4px 12px;
     background: #d66dd1;
@@ -91,7 +76,6 @@
     margin-left: 12px;
     flex-shrink: 0;
 }
-
 .summary {
     margin: 0 0 12px 0;
     font-size: 14px;
@@ -102,9 +86,38 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-
 .date {
     display: block;
     color: #999;
     font-size: 12px;
+}
+.sectionTitle {
+    font-size: 20px;
+    color: #333;
+    margin: 24px 0 16px 0;
+    border-left: 4px solid #d66dd1;
+    padding-left: 10px;
+}
+@media (max-width: 600px) {
+    .card {
+        padding: 16px;
+    }
+    .header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+    .header h2 {
+        font-size: 22px;
+    }
+    .sectionTitle {
+        font-size: 18px;
+        margin: 18px 0 12px 0;
+    }
+    .memories {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .memoryItem {
+        padding: 12px;
+    }
 }

@@ -17,18 +17,15 @@ export default function HistoryView({ history, isHistoryLoading, historyError, o
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
     const [emptyDateMessage, setEmptyDateMessage] = useState(null);
-
     useEffect(() => {
         if (selectedDate) {
             const today = new Date();
             const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            
             if (selectedDate === todayStr) {
                 setCurrentPageIndex(0);
                 setEmptyDateMessage(null);
                 return;
             }
-
             if (history.length > 0) {
                 const index = history.findIndex(item => {
                     const itemDate = new Date(item.occured_at).toISOString().split('T')[0];
@@ -45,46 +42,40 @@ export default function HistoryView({ history, isHistoryLoading, historyError, o
             }
         }
     }, [selectedDate, history]);
-
     const handleNext = () => {
         setEmptyDateMessage(null);
         if (currentPageIndex < history.length) {
             setCurrentPageIndex(prev => prev + 1);
         }
     };
-
     const handlePrev = () => {
         setEmptyDateMessage(null);
         if (currentPageIndex > 0) {
             setCurrentPageIndex(prev => prev - 1);
         }
     };
-
     if (isHistoryLoading) {
         return <p className={styles.emptyState}>Loading diary...</p>;
     }
-    
     if (historyError) {
         return <p className={styles.errorText}>{historyError}</p>;
     }
-
     return (
         <div className={styles.bookContainer}>
             <div className={styles.controls}>
                 <button onClick={handlePrev} disabled={currentPageIndex === 0} className={styles.navBtn}>
                     &larr; Newer
                 </button>
-                <input 
-                    type="date" 
-                    value={selectedDate} 
-                    onChange={(e) => setSelectedDate(e.target.value)} 
+                <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
                     className={styles.datePicker}
                 />
                 <button onClick={handleNext} disabled={currentPageIndex === history.length} className={styles.navBtn}>
                     Older &rarr;
                 </button>
             </div>
-            
             {emptyDateMessage ? (
                 <div className={styles.pageCard}>
                     <div className={styles.pageHeader}>
@@ -101,7 +92,6 @@ export default function HistoryView({ history, isHistoryLoading, historyError, o
                     </div>
                     <div className={styles.pageContent}>
                         <EntryView
-                            userId={userId}
                             text={text}
                             setText={setText}
                             onAnalyze={onAnalyze}
